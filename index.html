@@ -694,59 +694,57 @@
 // ─────────────────────────────────────────────────────────────
 const INTERCEPT = -0.7428727190639921;
 
-// Coefficients for ALL features (full model order)
 const COEFS = {
-  visit_index:    0.0,
-  Total_C:       -0.2649364495957765,
-  non_HDL_C:     -0.048090542068655054,
-  Remnant_C:     -0.09875488733174281,
-  VLDL_C:        -0.30707486289448105,
-  Clinical_LDL_C: 0.317462923717528,
-  LDL_C:          0.050664333781916406,
-  HDL_C:         -0.21684589832093912,
-  Total_TG:       0.40269461958534886,
-  VLDL_TG:        0.11619471194241938,
-  LDL_TG:         0.10806979569469079,
-  HDL_TG:         0.1331222779020505,
-  Total_PL:      -0.1998803941102911,
-  VLDL_PL:       -0.028016204673606448,
-  LDL_PL:         0.19013272683630442,
-  HDL_PL:        -0.20733333780926014,
-  Total_CE:      -0.19816575616491525,
-  VLDL_CE:       -0.23673632244431758,
-  LDL_CE:        -0.07100672499733365,
-  HDL_CE:        -0.13267305091013779,
-  Total_FC:      -0.06677069871615876,
-  VLDL_FC:       -0.07033852792494086,
-  LDL_FC:         0.12167107306355356,
-  HDL_FC:        -0.08417284427829656,
-  Total_L:       -0.06212223334586165,
-  VLDL_L:        -0.21889634860548393,
-  LDL_L:          0.3488668645152536,
-  HDL_L:         -0.2910569574176407,
-  Phosphoglyc:   -0.20956785328657093,
-  ApoB:          -0.13702721159029388,
-  ApoA1:          0.17937035733102383,
-  Total_FA:      -0.01139850247456371,
-  Omega_3:        0.11714888741754158,
-  Omega_6:        0.1336968143551649,
-  PUFA:           0.25084569588120886,
-  TG:            -0.02212251971612501,
-  FPG:            0.12083042439618455,
-  HbA1c:          0.5787438878450473,
-  ALT:            0.0750779143365853,
-  AST:           -0.24044352361681456,
-  CRP:           -0.04523945842080222,
-  HDL:            0.1895281575542016,
-  LDL:           -0.16775613411032086,
-  height:         0.18827993284692746,
-  BMI:            0.14159911632726116,
-  weight:        -0.08951357117276226,
-  age:            0.14297164009254243,
-  sex_Male:      -0.2718561149266465
+  visit_index:     0.0,
+  Total_C:        -0.2649364495957765,
+  non_HDL_C:      -0.048090542068655054,
+  Remnant_C:      -0.09875488733174281,
+  VLDL_C:         -0.30707486289448105,
+  Clinical_LDL_C:  0.317462923717528,
+  LDL_C:           0.050664333781916406,
+  HDL_C:          -0.21684589832093912,
+  Total_TG:        0.40269461958534886,
+  VLDL_TG:         0.11619471194241938,
+  LDL_TG:          0.10806979569469079,
+  HDL_TG:          0.1331222779020505,
+  Total_PL:       -0.1998803941102911,
+  VLDL_PL:        -0.028016204673606448,
+  LDL_PL:          0.19013272683630442,
+  HDL_PL:         -0.20733333780926014,
+  Total_CE:       -0.19816575616491525,
+  VLDL_CE:        -0.23673632244431758,
+  LDL_CE:         -0.07100672499733365,
+  HDL_CE:         -0.13267305091013779,
+  Total_FC:       -0.06677069871615876,
+  VLDL_FC:        -0.07033852792494086,
+  LDL_FC:          0.12167107306355356,
+  HDL_FC:         -0.08417284427829656,
+  Total_L:        -0.06212223334586165,
+  VLDL_L:         -0.21889634860548393,
+  LDL_L:           0.3488668645152536,
+  HDL_L:          -0.2910569574176407,
+  Phosphoglyc:    -0.20956785328657093,
+  ApoB:           -0.13702721159029388,
+  ApoA1:           0.17937035733102383,
+  Total_FA:       -0.01139850247456371,
+  Omega_3:         0.11714888741754158,
+  Omega_6:         0.1336968143551649,
+  PUFA:            0.25084569588120886,
+  TG:             -0.02212251971612501,
+  FPG:             0.12083042439618455,
+  HbA1c:           0.5787438878450473,
+  ALT:             0.0750779143365853,
+  AST:            -0.24044352361681456,
+  CRP:            -0.04523945842080222,
+  HDL:             0.1895281575542016,
+  LDL:            -0.16775613411032086,
+  height:          0.18827993284692746,
+  BMI:             0.14159911632726116,
+  weight:         -0.08951357117276226,
+  age:             0.14297164009254243,
+  sex_Male:       -0.2718561149266465
 };
 
-// Scaler parameters — ONLY for clinical variables
 const SCALER_MEAN = {
   FPG:      6.627874663797741,
   HbA1c:   46.839860139860136,
@@ -761,6 +759,7 @@ const SCALER_MEAN = {
   age:     58.535771920387305,
   sex_Male: 0.5556750941366326
 };
+
 const SCALER_SCALE = {
   FPG:      2.920215983615097,
   HbA1c:   13.553454356505844,
@@ -776,10 +775,8 @@ const SCALER_SCALE = {
   sex_Male: 0.49689061562166476
 };
 
-// Features that need StandardScaler
 const SCALED_FEATURES = new Set(Object.keys(SCALER_MEAN));
 
-// All features in order (must match training)
 const FEATURE_ORDER = [
   'visit_index','Total_C','non_HDL_C','Remnant_C','VLDL_C','Clinical_LDL_C',
   'LDL_C','HDL_C','Total_TG','VLDL_TG','LDL_TG','HDL_TG','Total_PL',
@@ -789,6 +786,161 @@ const FEATURE_ORDER = [
   'PUFA','TG','FPG','HbA1c','ALT','AST','CRP','HDL','LDL',
   'height','BMI','weight','age','sex_Male'
 ];
+
+// ─────────────────────────────────────────────────────────────
+//  所有需要验证的字段定义
+// ─────────────────────────────────────────────────────────────
+const REQUIRED_FIELDS = [
+  { id: 'HbA1c',          label: 'HbA1c'          },
+  { id: 'FPG',            label: 'FPG'             },
+  { id: 'Total_C',        label: 'Total_C'         },
+  { id: 'VLDL_C',         label: 'VLDL_C'          },
+  { id: 'Clinical_LDL_C', label: 'Clinical_LDL_C'  },
+  { id: 'HDL_C',          label: 'HDL_C'           },
+  { id: 'HDL',            label: 'HDL (Clinical)'  },
+  { id: 'LDL',            label: 'LDL (Clinical)'  },
+  { id: 'Total_TG',       label: 'Total_TG'        },
+  { id: 'HDL_TG',         label: 'HDL_TG'          },
+  { id: 'VLDL_TG',        label: 'VLDL_TG'         },
+  { id: 'LDL_TG',         label: 'LDL_TG'          },
+  { id: 'Total_PL',       label: 'Total_PL'        },
+  { id: 'HDL_PL',         label: 'HDL_PL'          },
+  { id: 'LDL_PL',         label: 'LDL_PL'          },
+  { id: 'Phosphoglyc',    label: 'Phosphoglyc'     },
+  { id: 'Total_CE',       label: 'Total_CE'        },
+  { id: 'VLDL_CE',        label: 'VLDL_CE'         },
+  { id: 'HDL_CE',         label: 'HDL_CE'          },
+  { id: 'LDL_FC',         label: 'LDL_FC'          },
+  { id: 'LDL_L',          label: 'LDL_L'           },
+  { id: 'HDL_L',          label: 'HDL_L'           },
+  { id: 'VLDL_L',         label: 'VLDL_L'          },
+  { id: 'ApoB',           label: 'ApoB'            },
+  { id: 'ApoA1',          label: 'ApoA1'           },
+  { id: 'Omega_6',        label: 'Omega_6'         },
+  { id: 'PUFA',           label: 'PUFA'            },
+  { id: 'Omega_3',        label: 'Omega_3'         },
+  { id: 'ALT',            label: 'ALT'             },
+  { id: 'AST',            label: 'AST'             },
+  { id: 'CRP',            label: 'CRP'             },
+  { id: 'age',            label: 'Age'             },
+  { id: 'height',         label: 'Height'          },
+  { id: 'BMI',            label: 'BMI'             },
+];
+
+// ─────────────────────────────────────────────────────────────
+//  清除所有错误状态
+// ─────────────────────────────────────────────────────────────
+function clearAllErrors() {
+  REQUIRED_FIELDS.forEach(f => {
+    const el = document.getElementById(f.id);
+    if (!el) return;
+    el.style.borderColor = '';
+    el.style.boxShadow   = '';
+    el.style.background  = '';
+    const old = el.parentNode.querySelector('.err-msg');
+    if (old) old.remove();
+  });
+  document.getElementById('sex_hint').style.display = 'none';
+  hideErrorBanner();
+}
+
+// ─────────────────────────────────────────────────────────────
+//  给某个 input 标红 + 加错误文字
+// ─────────────────────────────────────────────────────────────
+function markError(el, msg) {
+  el.style.borderColor = '#e05252';
+  el.style.boxShadow   = '0 0 0 3px rgba(224,82,82,0.15)';
+  el.style.background  = '#fff8f8';
+
+  // 移除旧的错误提示
+  const old = el.parentNode.querySelector('.err-msg');
+  if (old) old.remove();
+
+  const div = document.createElement('div');
+  div.className = 'err-msg';
+  div.innerHTML = `⚠ ${msg}`;
+  el.parentNode.appendChild(div);
+}
+
+// ─────────────────────────────────────────────────────────────
+//  验证单个字段，返回错误信息（无错则返回 null）
+// ─────────────────────────────────────────────────────────────
+function validateField(el, label) {
+  if (!el) return null;
+
+  const raw = el.value;
+
+  // 空值 / 纯空格
+  if (raw === '' || raw.trim() === '') {
+    return `${label} cannot be empty`;
+  }
+
+  const num = parseFloat(raw);
+
+  // 非数字
+  if (isNaN(num)) {
+    return `${label} must be a valid number`;
+  }
+
+  // 等于 0
+  if (num === 0) {
+    return `${label} cannot be 0`;
+  }
+
+  // 负数
+  if (num < 0) {
+    return `${label} must be a positive value`;
+  }
+
+  return null; // 通过验证
+}
+
+// ─────────────────────────────────────────────────────────────
+//  错误横幅（页面顶部）
+// ─────────────────────────────────────────────────────────────
+function showErrorBanner(count) {
+  let banner = document.getElementById('errorBanner');
+  if (!banner) {
+    banner = document.createElement('div');
+    banner.id = 'errorBanner';
+    banner.style.cssText = `
+      position: fixed;
+      top: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #fef2f2;
+      border: 1.5px solid #fecaca;
+      border-radius: 10px;
+      padding: 11px 24px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #991b1b;
+      z-index: 9999;
+      box-shadow: 0 4px 20px rgba(224,82,82,0.20);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      cursor: pointer;
+    `;
+    // 点击横幅可以手动关闭
+    banner.onclick = () => { banner.style.display = 'none'; };
+    document.body.appendChild(banner);
+  }
+  banner.innerHTML = `⚠&nbsp; Please fix <strong>${count}</strong> field${count > 1 ? 's' : ''} before calculating &nbsp;✕`;
+  banner.style.display = 'flex';
+
+  // 4秒后自动隐藏
+  clearTimeout(window._bannerTimer);
+  window._bannerTimer = setTimeout(() => {
+    if (banner) banner.style.display = 'none';
+  }, 4000);
+}
+
+function hideErrorBanner() {
+  const banner = document.getElementById('errorBanner');
+  if (banner) banner.style.display = 'none';
+}
 
 // ─────────────────────────────────────────────────────────────
 //  SEX TOGGLE
@@ -808,177 +960,53 @@ function resetForm() {
   document.getElementById('sex_Male').value = '';
   document.getElementById('btn_male').classList.remove('active');
   document.getElementById('btn_female').classList.remove('active');
-  document.getElementById('sex_hint').style.display = 'none';
   document.getElementById('resultEmpty').style.display = 'block';
   document.getElementById('resultBody').style.display  = 'none';
-  // reset input styling
   document.querySelectorAll('.field input').forEach(el => el.classList.remove('filled'));
+  clearAllErrors();
 }
 
 // ─────────────────────────────────────────────────────────────
-//  CALCULATE
+//  CALCULATE（含完整验证）
 // ─────────────────────────────────────────────────────────────
 function calculate() {
 
-  // ─────────────────────────────────────────────
-  //  所有需要验证的字段
-  // ─────────────────────────────────────────────
-  const REQUIRED_FIELDS = [
-    // 糖代谢
-    { id: 'HbA1c',          label: 'HbA1c',          min: 0.001 },
-    { id: 'FPG',            label: 'FPG',             min: 0.001 },
-    // 胆固醇
-    { id: 'Total_C',        label: 'Total_C',         min: 0.001 },
-    { id: 'VLDL_C',         label: 'VLDL_C',         min: 0.001 },
-    { id: 'Clinical_LDL_C', label: 'Clinical_LDL_C', min: 0.001 },
-    { id: 'HDL_C',          label: 'HDL_C',           min: 0.001 },
-    { id: 'HDL',            label: 'HDL (Clinical)',  min: 0.001 },
-    { id: 'LDL',            label: 'LDL (Clinical)',  min: 0.001 },
-    // 甘油三酯
-    { id: 'Total_TG',       label: 'Total_TG',        min: 0.001 },
-    { id: 'HDL_TG',         label: 'HDL_TG',          min: 0.001 },
-    { id: 'VLDL_TG',        label: 'VLDL_TG',        min: 0.001 },
-    { id: 'LDL_TG',         label: 'LDL_TG',         min: 0.001 },
-    // 磷脂
-    { id: 'Total_PL',       label: 'Total_PL',        min: 0.001 },
-    { id: 'HDL_PL',         label: 'HDL_PL',          min: 0.001 },
-    { id: 'LDL_PL',         label: 'LDL_PL',         min: 0.001 },
-    { id: 'Phosphoglyc',    label: 'Phosphoglyc',     min: 0.001 },
-    // 胆固醇酯
-    { id: 'Total_CE',       label: 'Total_CE',        min: 0.001 },
-    { id: 'VLDL_CE',        label: 'VLDL_CE',        min: 0.001 },
-    { id: 'HDL_CE',         label: 'HDL_CE',          min: 0.001 },
-    { id: 'LDL_FC',         label: 'LDL_FC',         min: 0.001 },
-    // 脂蛋白
-    { id: 'LDL_L',          label: 'LDL_L',           min: 0.001 },
-    { id: 'HDL_L',          label: 'HDL_L',           min: 0.001 },
-    { id: 'VLDL_L',         label: 'VLDL_L',         min: 0.001 },
-    { id: 'ApoB',           label: 'ApoB',            min: 0.001 },
-    { id: 'ApoA1',          label: 'ApoA1',           min: 0.001 },
-    { id: 'Omega_6',        label: 'Omega_6',         min: 0.001 },
-    { id: 'PUFA',           label: 'PUFA',            min: 0.001 },
-    { id: 'Omega_3',        label: 'Omega_3',         min: 0.001 },
-    // 肝酶炎症
-    { id: 'ALT',            label: 'ALT',             min: 0.001 },
-    { id: 'AST',            label: 'AST',             min: 0.001 },
-    { id: 'CRP',            label: 'CRP',             min: 0.001 },
-    // 人口学
-    { id: 'age',            label: 'Age',             min: 1     },
-    { id: 'height',         label: 'Height',          min: 1     },
-    { id: 'BMI',            label: 'BMI',             min: 0.001 },
-  ];
+  // ── Step 1: 清除上一次所有错误 ──
+  clearAllErrors();
 
-  // ─────────────────────────────────────────────
-  //  验证所有字段
-  // ─────────────────────────────────────────────
-  let errors = [];
-  let firstErrorEl = null;
+  // ── Step 2: 验证所有字段 ──
+  let errorCount    = 0;
+  let firstErrorEl  = null;
 
-  // 清除所有旧的报错样式
-  REQUIRED_FIELDS.forEach(f => {
-    const el = document.getElementById(f.id);
-    if (el) {
-      el.style.borderColor = '';
-      el.style.boxShadow  = '';
-      el.style.background = '';
-      // 移除旧的错误提示
-      const oldMsg = el.parentNode.querySelector('.err-msg');
-      if (oldMsg) oldMsg.remove();
-    }
-  });
-  // 清除 sex 报错
-  document.getElementById('sex_hint').style.display = 'none';
-
-  // 检查每个字段
   REQUIRED_FIELDS.forEach(f => {
     const el  = document.getElementById(f.id);
-    if (!el) return;
-
-    const raw = el.value.trim();
-
-    let errMsg = null;
-
-    // 空值检查
-    if (raw === '' || raw === null) {
-      errMsg = `${f.label} cannot be empty`;
-
-    // 空格检查（输入全是空格）
-    } else if (el.value !== raw && raw === '') {
-      errMsg = `${f.label} cannot be blank spaces`;
-
-    } else {
-      const num = parseFloat(raw);
-
-      // 非数字检查
-      if (isNaN(num)) {
-        errMsg = `${f.label} must be a valid number`;
-
-      // 等于0检查
-      } else if (num === 0) {
-        errMsg = `${f.label} cannot be 0`;
-
-      // 小于0检查
-      } else if (num < 0) {
-        errMsg = `${f.label} must be a positive value`;
-      }
-    }
-
-    if (errMsg) {
-      errors.push(errMsg);
-
-      // 红色边框高亮
-      el.style.borderColor = '#e05252';
-      el.style.boxShadow   = '0 0 0 3px rgba(224,82,82,0.15)';
-      el.style.background  = '#fff8f8';
-
-      // 在输入框下方插入错误文字
-      const msg = document.createElement('div');
-      msg.className   = 'err-msg';
-      msg.style.cssText = `
-        font-size:10px;
-        color:#e05252;
-        margin-top:3px;
-        font-weight:600;
-        display:flex;
-        align-items:center;
-        gap:3px;
-      `;
-      msg.innerHTML = `⚠ ${errMsg}`;
-      el.parentNode.appendChild(msg);
-
-      // 记录第一个出错的字段，用于滚动定位
+    const err = validateField(el, f.label);
+    if (err) {
+      errorCount++;
+      markError(el, err);
       if (!firstErrorEl) firstErrorEl = el;
     }
   });
 
-  // 检查 sex
+  // ── Step 3: 验证性别 ──
   const sexVal = document.getElementById('sex_Male').value;
   if (sexVal === '') {
-    errors.push('Sex must be selected');
+    errorCount++;
     document.getElementById('sex_hint').style.display = 'block';
     if (!firstErrorEl) firstErrorEl = document.getElementById('btn_female');
   }
 
-  // ─────────────────────────────────────────────
-  //  有错误 → 滚动到第一个错误处，不继续计算
-  // ─────────────────────────────────────────────
-  if (errors.length > 0) {
-    if (firstErrorEl) {
+  // ── Step 4: 有错误则停止 ──
+  if (errorCount > 0) {
+    showErrorBanner(errorCount);
+    // 滚动到第一个出错的字段
+    setTimeout(() => {
       firstErrorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      firstErrorEl.focus();
-    }
-
-    // 顶部显示汇总错误数量提示
-    showErrorBanner(errors.length);
+    }, 100);
     return;
   }
 
-  // ─────────────────────────────────────────────
-  //  验证通过 → 隐藏错误横幅，继续计算
-  // ─────────────────────────────────────────────
-  hideErrorBanner();
-
-  // Collect raw input values
+  // ── Step 5: 验证全部通过 → 收集数值 ──
   const rawValues = {};
   rawValues['visit_index'] = 0;
   rawValues['sex_Male']    = parseFloat(sexVal);
@@ -1013,7 +1041,7 @@ function calculate() {
   });
   rawValues['weight'] = null;
 
-  // ── Compute log-odds ──
+  // ── Step 6: 计算 log-odds ──
   let logit = INTERCEPT;
   FEATURE_ORDER.forEach(feat => {
     const coef = COEFS[feat];
@@ -1021,11 +1049,9 @@ function calculate() {
     let val;
     if (SCALED_FEATURES.has(feat)) {
       const raw = rawValues[feat];
-      if (raw === null || raw === undefined || isNaN(raw)) {
-        val = 0;
-      } else {
-        val = (raw - SCALER_MEAN[feat]) / SCALER_SCALE[feat];
-      }
+      val = (raw === null || raw === undefined || isNaN(raw))
+        ? 0
+        : (raw - SCALER_MEAN[feat]) / SCALER_SCALE[feat];
     } else {
       const raw = rawValues[feat];
       val = (raw === null || raw === undefined || isNaN(raw)) ? 0 : raw;
@@ -1033,133 +1059,8 @@ function calculate() {
     logit += coef * val;
   });
 
+  // ── Step 7: Sigmoid → 概率 ──
   const prob = 1 / (1 + Math.exp(-logit));
-  showResult(prob, logit);
-}
-
-// ─────────────────────────────────────────────────────────────
-//  错误横幅（顶部提示）
-// ─────────────────────────────────────────────────────────────
-function showErrorBanner(count) {
-  let banner = document.getElementById('errorBanner');
-  if (!banner) {
-    banner = document.createElement('div');
-    banner.id = 'errorBanner';
-    banner.style.cssText = `
-      position: fixed;
-      top: 62px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #fef2f2;
-      border: 1.5px solid #fecaca;
-      border-radius: 10px;
-      padding: 11px 22px;
-      font-size: 13px;
-      font-weight: 700;
-      color: #991b1b;
-      z-index: 999;
-      box-shadow: 0 4px 20px rgba(224,82,82,0.18);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      white-space: nowrap;
-    `;
-    document.body.appendChild(banner);
-  }
-  banner.innerHTML = `⚠ Please fix ${count} error${count > 1 ? 's' : ''} before calculating`;
-  banner.style.display = 'flex';
-
-  // 3秒后自动消失
-  clearTimeout(window._bannerTimer);
-  window._bannerTimer = setTimeout(() => {
-    banner.style.display = 'none';
-  }, 3000);
-}
-
-function hideErrorBanner() {
-  const banner = document.getElementById('errorBanner');
-  if (banner) banner.style.display = 'none';
-}
-
-
-  // Collect raw input values
-  // For NMR features not in the form → use 0 (contributes 0 to log-odds since raw × coef)
-  // For clinical features not filled → use cohort mean (z-score = 0)
-  const rawValues = {};
-
-  // Fixed
-  rawValues['visit_index'] = 0;
-  rawValues['sex_Male']    = parseFloat(sexVal);
-
-  // NMR features with inputs
-  const nmrIds = [
-    'Total_C','VLDL_C','Clinical_LDL_C','HDL_C',
-    'Total_TG','VLDL_TG','LDL_TG','HDL_TG',
-    'Total_PL','HDL_PL','LDL_PL','Phosphoglyc',
-    'Total_CE','VLDL_CE','HDL_CE','LDL_FC',
-    'LDL_L','HDL_L','VLDL_L',
-    'ApoB','ApoA1','Omega_6','PUFA','Omega_3'
-  ];
-  nmrIds.forEach(id => {
-    const el = document.getElementById(id);
-    rawValues[id] = (el && el.value !== '') ? parseFloat(el.value) : 0;
-    if (el && el.value !== '') el.classList.add('filled');
-  });
-
-  // NMR features NOT in form (set to 0 raw → contribution = 0)
-  const missingNMR = [
-    'non_HDL_C','Remnant_C','LDL_C',
-    'VLDL_PL',
-    'LDL_CE',
-    'Total_FC','VLDL_FC','HDL_FC',
-    'Total_L',
-    'Total_FA','TG',
-    'HDL_L' // already above, skip
-  ];
-  missingNMR.forEach(id => {
-    if (!(id in rawValues)) rawValues[id] = 0;
-  });
-
-  // Clinical features with inputs
-  const clinIds = ['FPG','HbA1c','ALT','AST','CRP','HDL','LDL','height','BMI','age'];
-  clinIds.forEach(id => {
-    const el = document.getElementById(id);
-    rawValues[id] = (el && el.value !== '') ? parseFloat(el.value) : null;
-    if (el && el.value !== '') el.classList.add('filled');
-  });
-
-  // weight not in form → mean → z=0
-  rawValues['weight'] = null;
-
-  // ── Compute log-odds ──
-  let logit = INTERCEPT;
-
-  FEATURE_ORDER.forEach(feat => {
-    const coef = COEFS[feat];
-    if (coef === 0) return;
-
-    let val;
-    if (SCALED_FEATURES.has(feat)) {
-      // Clinical: standardise
-      const raw = rawValues[feat];
-      if (raw === null || raw === undefined || isNaN(raw)) {
-        val = 0; // mean → z=0
-      } else {
-        val = (raw - SCALER_MEAN[feat]) / SCALER_SCALE[feat];
-      }
-    } else {
-      // NMR: raw value
-      const raw = rawValues[feat];
-      val = (raw === null || raw === undefined || isNaN(raw)) ? 0 : raw;
-    }
-
-    logit += coef * val;
-  });
-
-  // ── Sigmoid ──
-  const prob = 1 / (1 + Math.exp(-logit));
-
-  // ── Show results ──
   showResult(prob, logit);
 }
 
@@ -1174,70 +1075,57 @@ function showResult(prob, logit) {
   const pct = (prob * 100).toFixed(1);
   const or  = Math.exp(logit).toFixed(3);
 
-  // ── Gauge ──
   updateGauge(prob);
 
-  // ── Gauge number ──
   const numEl = document.getElementById('gaugeNum');
   numEl.textContent = pct + '%';
 
-  // ── Risk category ──
   const badge = document.getElementById('riskBadge');
   const label = document.getElementById('riskLabel');
   badge.className = 'risk-badge';
 
-  let category, interp;
+  let interp;
   if (prob < 0.25) {
     badge.classList.add('r-low');
     label.textContent = '🟢 Low Risk  (< 25%)';
     numEl.style.color = '#166534';
-    category = 'Low';
     interp = `The predicted probability of DR is <strong>${pct}%</strong>, which falls in the <strong>low-risk</strong> range. Continued monitoring of glycaemic control and lipid profiles is recommended. Routine ophthalmological screening per clinical guidelines is advised.`;
   } else if (prob < 0.55) {
     badge.classList.add('r-mod');
     label.textContent = '🟡 Moderate Risk  (25–55%)';
     numEl.style.color = '#92400e';
-    category = 'Moderate';
     interp = `The predicted probability of DR is <strong>${pct}%</strong>, indicating <strong>moderate risk</strong>. Consider intensified management of HbA1c, triglycerides, and blood pressure. Enhanced ophthalmological surveillance (e.g. annual dilated fundus exam) is strongly recommended.`;
   } else {
     badge.classList.add('r-high');
     label.textContent = '🔴 High Risk  (≥ 55%)';
     numEl.style.color = '#991b1b';
-    category = 'High';
-    interp = `The predicted probability of DR is <strong>${pct}%</strong>, indicating <strong>high risk</strong>. Prompt ophthalmological referral is warranted. Aggressive optimisation of glycaemic control (HbA1c target), lipid-lowering therapy, and blood pressure management should be prioritised.`;
+    interp = `The predicted probability of DR is <strong>${pct}%</strong>, indicating <strong>high risk</strong>. Prompt ophthalmological referral is warranted. Aggressive optimisation of glycaemic control, lipid-lowering therapy, and blood pressure management should be prioritised.`;
   }
 
-  // ── Metrics ──
   document.getElementById('mvalProb').textContent  = pct + '%';
   document.getElementById('mvalLogit').textContent = logit.toFixed(4);
   document.getElementById('mvalOR').textContent    = or;
 
-  // bar widths
   setTimeout(() => {
     document.getElementById('mbarProb').style.width  = Math.min(prob * 100, 100) + '%';
-    // logit bar: clamp to -4..+4 range → 0..100%
     const logitPct = Math.min(Math.max((logit + 4) / 8 * 100, 0), 100);
-    document.getElementById('mbarLogit').style.width  = logitPct + '%';
-    // OR bar: clamp 0..5 → 0..100%
+    document.getElementById('mbarLogit').style.width = logitPct + '%';
     const orPct = Math.min(Math.exp(logit) / 5 * 100, 100);
-    document.getElementById('mbarOR').style.width = orPct + '%';
+    document.getElementById('mbarOR').style.width    = orPct + '%';
   }, 50);
 
-  // ── Interpretation ──
   document.getElementById('interpText').innerHTML = interp;
 }
 
 // ─────────────────────────────────────────────────────────────
-//  GAUGE ANIMATION
+//  GAUGE
 // ─────────────────────────────────────────────────────────────
 function updateGauge(prob) {
-  const totalLen = 251.2; // π × r = π × 80 ≈ 251.2
-  const fill = Math.min(prob, 1) * totalLen;
-
+  const totalLen = 251.2;
+  const fill     = Math.min(prob, 1) * totalLen;
   const fillEl   = document.getElementById('gaugeFill');
   const needleEl = document.getElementById('gaugeNeedle');
 
-  // Color gradient: green → amber → red
   let color;
   if (prob < 0.25)      color = '#27ae60';
   else if (prob < 0.55) color = '#f59e0b';
@@ -1246,9 +1134,7 @@ function updateGauge(prob) {
   fillEl.setAttribute('stroke-dasharray', `${fill} ${totalLen}`);
   fillEl.setAttribute('stroke', color);
 
-  // Needle position along arc
-  // Arc: center (105,105), r=80, from 180° to 0° (left to right)
-  const angle = Math.PI - Math.min(prob, 1) * Math.PI; // 180° → 0°
+  const angle = Math.PI - Math.min(prob, 1) * Math.PI;
   const nx = 105 + 80 * Math.cos(angle);
   const ny = 105 - 80 * Math.sin(angle);
   needleEl.setAttribute('cx', nx.toFixed(2));
@@ -1257,15 +1143,24 @@ function updateGauge(prob) {
 }
 
 // ─────────────────────────────────────────────────────────────
-//  Live "filled" class on inputs
+//  输入时实时清除该字段的错误状态
 // ─────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.field input[type="number"]').forEach(el => {
     el.addEventListener('input', () => {
+      // 有值 → 清除红色样式
       el.classList.toggle('filled', el.value !== '');
+      if (el.value !== '') {
+        el.style.borderColor = '';
+        el.style.boxShadow   = '';
+        el.style.background  = '';
+        const old = el.parentNode.querySelector('.err-msg');
+        if (old) old.remove();
+      }
     });
   });
 });
+
 </script>
 
 </body>

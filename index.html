@@ -108,6 +108,12 @@
   .field input:focus,.field select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(33,150,196,0.12);background:white}
   .field input.filled{border-color:#c2d7f0;background:#f8fbff}
   .field .hint{font-size:10px;color:var(--text3)}
+  .err-msg {
+    font-size: 10px;
+    color: #e05252;
+    margin-top: 3px;
+    font-weight: 600;
+  }
 
   /* ── TOGGLE ROW ── */
   .toggle-row{display:flex;padding:12px 22px;gap:10px}
@@ -813,13 +819,268 @@ function resetForm() {
 //  CALCULATE
 // ─────────────────────────────────────────────────────────────
 function calculate() {
-  // Check sex
+
+  // ─────────────────────────────────────────────
+  //  所有需要验证的字段
+  // ─────────────────────────────────────────────
+  const REQUIRED_FIELDS = [
+    // 糖代谢
+    { id: 'HbA1c',          label: 'HbA1c',          min: 0.001 },
+    { id: 'FPG',            label: 'FPG',             min: 0.001 },
+    // 胆固醇
+    { id: 'Total_C',        label: 'Total_C',         min: 0.001 },
+    { id: 'VLDL_C',         label: 'VLDL_C',         min: 0.001 },
+    { id: 'Clinical_LDL_C', label: 'Clinical_LDL_C', min: 0.001 },
+    { id: 'HDL_C',          label: 'HDL_C',           min: 0.001 },
+    { id: 'HDL',            label: 'HDL (Clinical)',  min: 0.001 },
+    { id: 'LDL',            label: 'LDL (Clinical)',  min: 0.001 },
+    // 甘油三酯
+    { id: 'Total_TG',       label: 'Total_TG',        min: 0.001 },
+    { id: 'HDL_TG',         label: 'HDL_TG',          min: 0.001 },
+    { id: 'VLDL_TG',        label: 'VLDL_TG',        min: 0.001 },
+    { id: 'LDL_TG',         label: 'LDL_TG',         min: 0.001 },
+    // 磷脂
+    { id: 'Total_PL',       label: 'Total_PL',        min: 0.001 },
+    { id: 'HDL_PL',         label: 'HDL_PL',          min: 0.001 },
+    { id: 'LDL_PL',         label: 'LDL_PL',         min: 0.001 },
+    { id: 'Phosphoglyc',    label: 'Phosphoglyc',     min: 0.001 },
+    // 胆固醇酯
+    { id: 'Total_CE',       label: 'Total_CE',        min: 0.001 },
+    { id: 'VLDL_CE',        label: 'VLDL_CE',        min: 0.001 },
+    { id: 'HDL_CE',         label: 'HDL_CE',          min: 0.001 },
+    { id: 'LDL_FC',         label: 'LDL_FC',         min: 0.001 },
+    // 脂蛋白
+    { id: 'LDL_L',          label: 'LDL_L',           min: 0.001 },
+    { id: 'HDL_L',          label: 'HDL_L',           min: 0.001 },
+    { id: 'VLDL_L',         label: 'VLDL_L',         min: 0.001 },
+    { id: 'ApoB',           label: 'ApoB',            min: 0.001 },
+    { id: 'ApoA1',          label: 'ApoA1',           min: 0.001 },
+    { id: 'Omega_6',        label: 'Omega_6',         min: 0.001 },
+    { id: 'PUFA',           label: 'PUFA',            min: 0.001 },
+    { id: 'Omega_3',        label: 'Omega_3',         min: 0.001 },
+    // 肝酶炎症
+    { id: 'ALT',            label: 'ALT',             min: 0.001 },
+    { id: 'AST',            label: 'AST',             min: 0.001 },
+    { id: 'CRP',            label: 'CRP',             min: 0.001 },
+    // 人口学
+    { id: 'age',            label: 'Age',             min: 1     },
+    { id: 'height',         label: 'Height',          min: 1     },
+    { id: 'BMI',            label: 'BMI',             min: 0.001 },
+  ];
+
+  // ─────────────────────────────────────────────
+  //  验证所有字段
+  // ─────────────────────────────────────────────
+  let errors = [];
+  let firstErrorEl = null;
+
+  // 清除所有旧的报错样式
+  REQUIRED_FIELDS.forEach(f => {
+    const el = document.getElementById(f.id);
+    if (el) {
+      el.style.borderColor = '';
+      el.style.boxShadow  = '';
+      el.style.background = '';
+      // 移除旧的错误提示
+      const oldMsg = el.parentNode.querySelector('.err-msg');
+      if (oldMsg) oldMsg.remove();
+    }
+  });
+  // 清除 sex 报错
+  document.getElementById('sex_hint').style.display = 'none';
+
+  // 检查每个字段
+  REQUIRED_FIELDS.forEach(f => {
+    const el  = document.getElementById(f.id);
+    if (!el) return;
+
+    const raw = el.value.trim();
+
+    let errMsg = null;
+
+    // 空值检查
+    if (raw === '' || raw === null) {
+      errMsg = `${f.label} cannot be empty`;
+
+    // 空格检查（输入全是空格）
+    } else if (el.value !== raw && raw === '') {
+      errMsg = `${f.label} cannot be blank spaces`;
+
+    } else {
+      const num = parseFloat(raw);
+
+      // 非数字检查
+      if (isNaN(num)) {
+        errMsg = `${f.label} must be a valid number`;
+
+      // 等于0检查
+      } else if (num === 0) {
+        errMsg = `${f.label} cannot be 0`;
+
+      // 小于0检查
+      } else if (num < 0) {
+        errMsg = `${f.label} must be a positive value`;
+      }
+    }
+
+    if (errMsg) {
+      errors.push(errMsg);
+
+      // 红色边框高亮
+      el.style.borderColor = '#e05252';
+      el.style.boxShadow   = '0 0 0 3px rgba(224,82,82,0.15)';
+      el.style.background  = '#fff8f8';
+
+      // 在输入框下方插入错误文字
+      const msg = document.createElement('div');
+      msg.className   = 'err-msg';
+      msg.style.cssText = `
+        font-size:10px;
+        color:#e05252;
+        margin-top:3px;
+        font-weight:600;
+        display:flex;
+        align-items:center;
+        gap:3px;
+      `;
+      msg.innerHTML = `⚠ ${errMsg}`;
+      el.parentNode.appendChild(msg);
+
+      // 记录第一个出错的字段，用于滚动定位
+      if (!firstErrorEl) firstErrorEl = el;
+    }
+  });
+
+  // 检查 sex
   const sexVal = document.getElementById('sex_Male').value;
   if (sexVal === '') {
+    errors.push('Sex must be selected');
     document.getElementById('sex_hint').style.display = 'block';
-    document.getElementById('btn_male').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (!firstErrorEl) firstErrorEl = document.getElementById('btn_female');
+  }
+
+  // ─────────────────────────────────────────────
+  //  有错误 → 滚动到第一个错误处，不继续计算
+  // ─────────────────────────────────────────────
+  if (errors.length > 0) {
+    if (firstErrorEl) {
+      firstErrorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      firstErrorEl.focus();
+    }
+
+    // 顶部显示汇总错误数量提示
+    showErrorBanner(errors.length);
     return;
   }
+
+  // ─────────────────────────────────────────────
+  //  验证通过 → 隐藏错误横幅，继续计算
+  // ─────────────────────────────────────────────
+  hideErrorBanner();
+
+  // Collect raw input values
+  const rawValues = {};
+  rawValues['visit_index'] = 0;
+  rawValues['sex_Male']    = parseFloat(sexVal);
+
+  const nmrIds = [
+    'Total_C','VLDL_C','Clinical_LDL_C','HDL_C',
+    'Total_TG','VLDL_TG','LDL_TG','HDL_TG',
+    'Total_PL','HDL_PL','LDL_PL','Phosphoglyc',
+    'Total_CE','VLDL_CE','HDL_CE','LDL_FC',
+    'LDL_L','HDL_L','VLDL_L',
+    'ApoB','ApoA1','Omega_6','PUFA','Omega_3'
+  ];
+  nmrIds.forEach(id => {
+    const el = document.getElementById(id);
+    rawValues[id] = (el && el.value !== '') ? parseFloat(el.value) : 0;
+    if (el && el.value !== '') el.classList.add('filled');
+  });
+
+  const missingNMR = [
+    'non_HDL_C','Remnant_C','LDL_C','VLDL_PL',
+    'LDL_CE','Total_FC','VLDL_FC','HDL_FC','Total_L','Total_FA','TG'
+  ];
+  missingNMR.forEach(id => {
+    if (!(id in rawValues)) rawValues[id] = 0;
+  });
+
+  const clinIds = ['FPG','HbA1c','ALT','AST','CRP','HDL','LDL','height','BMI','age'];
+  clinIds.forEach(id => {
+    const el = document.getElementById(id);
+    rawValues[id] = (el && el.value !== '') ? parseFloat(el.value) : null;
+    if (el && el.value !== '') el.classList.add('filled');
+  });
+  rawValues['weight'] = null;
+
+  // ── Compute log-odds ──
+  let logit = INTERCEPT;
+  FEATURE_ORDER.forEach(feat => {
+    const coef = COEFS[feat];
+    if (coef === 0) return;
+    let val;
+    if (SCALED_FEATURES.has(feat)) {
+      const raw = rawValues[feat];
+      if (raw === null || raw === undefined || isNaN(raw)) {
+        val = 0;
+      } else {
+        val = (raw - SCALER_MEAN[feat]) / SCALER_SCALE[feat];
+      }
+    } else {
+      const raw = rawValues[feat];
+      val = (raw === null || raw === undefined || isNaN(raw)) ? 0 : raw;
+    }
+    logit += coef * val;
+  });
+
+  const prob = 1 / (1 + Math.exp(-logit));
+  showResult(prob, logit);
+}
+
+// ─────────────────────────────────────────────────────────────
+//  错误横幅（顶部提示）
+// ─────────────────────────────────────────────────────────────
+function showErrorBanner(count) {
+  let banner = document.getElementById('errorBanner');
+  if (!banner) {
+    banner = document.createElement('div');
+    banner.id = 'errorBanner';
+    banner.style.cssText = `
+      position: fixed;
+      top: 62px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #fef2f2;
+      border: 1.5px solid #fecaca;
+      border-radius: 10px;
+      padding: 11px 22px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #991b1b;
+      z-index: 999;
+      box-shadow: 0 4px 20px rgba(224,82,82,0.18);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    `;
+    document.body.appendChild(banner);
+  }
+  banner.innerHTML = `⚠ Please fix ${count} error${count > 1 ? 's' : ''} before calculating`;
+  banner.style.display = 'flex';
+
+  // 3秒后自动消失
+  clearTimeout(window._bannerTimer);
+  window._bannerTimer = setTimeout(() => {
+    banner.style.display = 'none';
+  }, 3000);
+}
+
+function hideErrorBanner() {
+  const banner = document.getElementById('errorBanner');
+  if (banner) banner.style.display = 'none';
+}
+
 
   // Collect raw input values
   // For NMR features not in the form → use 0 (contributes 0 to log-odds since raw × coef)

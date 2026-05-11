@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DR Risk Calculator</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --primary:#1a5fa8;
+    --primary-dark:#144d8a;
+    --primary-lt:#e8f1fb;
+    --accent:#2196c4;
+    --teal:#0e9988;
+    --teal-lt:#e6f7f5;
+    --purple:#6c5ce7;
+    --purple-lt:#f0eeff;
+    --orange:#e67e22;
+    --red:#e05252;
+    --green:#27ae60;
+    --amber:#f59e0b;
+    --text:#1a2332;
+    --text2:#4a5568;
+    --text3:#8a9ab0;
+    --border:#dde4ee;
+    --bg:#f4f7fb;
+    --card:#ffffff;
+    --radius:14px;
+    --shadow:0 2px 20px rgba(26,95,168,0.08);
+    --shadow-lg:0 8px 40px rgba(26,95,168,0.14);
+  }
+  html{scroll-behavior:smooth}
+  body{font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.6}
+
+  /* ── HEADER ── */
+  header{background:var(--card);border-bottom:1px solid var(--border);padding:0 40px;position:sticky;top:0;z-index:200;box-shadow:0 1px 10px rgba(26,95,168,0.07)}
+  .hdr{max-width:1160px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:62px}
+  .logo{display:flex;align-items:center;gap:12px}
+  .logo-mark{width:38px;height:38px;background:linear-gradient(135deg,var(--primary),var(--accent));border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .logo-mark svg{width:20px;height:20px;fill:white}
+  .logo-name{font-size:15px;font-weight:800;color:var(--primary);letter-spacing:-0.01em}
+  .logo-sub{font-size:11px;color:var(--text3);font-weight:400;margin-top:-1px}
+  .hdr-right{display:flex;align-items:center;gap:10px}
+  .badge{font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:4px 12px;border-radius:20px}
+  .badge-blue{background:var(--primary-lt);color:var(--primary);border:1px solid #c2d7f0}
+  .badge-teal{background:var(--teal-lt);color:var(--teal);border:1px solid #b2e5df}
+
+  /* ── HERO ── */
+  .hero{background:linear-gradient(135deg,#f0f6ff 0%,#e8f4fb 60%,#f0faf8 100%);border-bottom:1px solid var(--border);padding:52px 40px 44px;text-align:center}
+  .hero-pill{display:inline-flex;align-items:center;gap:6px;background:var(--primary);color:#fff;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:5px 16px;border-radius:30px;margin-bottom:18px}
+  .hero-pill::before{content:'';width:6px;height:6px;background:#7dd3fc;border-radius:50%;display:inline-block}
+  .hero h1{font-size:30px;font-weight:900;letter-spacing:-0.025em;color:var(--text);margin-bottom:12px;line-height:1.2}
+  .hero h1 em{font-style:normal;color:var(--primary)}
+  .hero-desc{font-size:14px;color:var(--text2);max-width:580px;margin:0 auto 24px;line-height:1.7}
+  .hero-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+  .chip{display:inline-flex;align-items:center;gap:5px;background:white;border:1px solid var(--border);border-radius:20px;padding:4px 13px;font-size:11px;color:var(--text2);font-weight:500}
+  .chip-dot{width:5px;height:5px;border-radius:50%;background:var(--accent)}
+
+  /* ── LAYOUT ── */
+  .wrap{max-width:1160px;margin:32px auto;padding:0 24px;display:grid;grid-template-columns:1fr 360px;gap:24px;align-items:start}
+  @media(max-width:860px){.wrap{grid-template-columns:1fr}}
+
+  /* ── CARD ── */
+  .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:20px;overflow:hidden}
+  .card:last-child{margin-bottom:0}
+
+  /* ── CARD HEADER ── */
+  .ch{padding:15px 22px 13px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:11px}
+  .ch-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .ch-icon svg{width:16px;height:16px}
+  .ci-blue{background:#dbeafe} .ci-blue svg{stroke:#1d4ed8}
+  .ci-teal{background:#ccfbf1} .ci-teal svg{stroke:#0d9488}
+  .ci-purple{background:#ede9fe} .ci-purple svg{stroke:#7c3aed}
+  .ci-orange{background:#fef3c7} .ci-orange svg{stroke:#d97706}
+  .ch-text h3{font-size:13px;font-weight:700;color:var(--text)}
+  .ch-text p{font-size:11px;color:var(--text3);margin-top:1px}
+
+  /* ── SECTION LABEL ── */
+  .slabel{display:flex;align-items:center;gap:8px;padding:14px 22px 6px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3)}
+  .slabel::after{content:'';flex:1;height:1px;background:var(--border)}
+
+  /* ── INPUT GRID ── */
+  .igrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px 16px;padding:8px 22px 18px}
+  .igrid-2{grid-template-columns:repeat(2,1fr)}
+  @media(max-width:600px){.igrid,.igrid-2{grid-template-columns:1fr 1fr}}
+
+  .field{display:flex;flex-direction:column;gap:4px}
+  .field label{font-size:11px;font-weight:700;color:var(--text2);display:flex;align-items:center;gap:3px}
+  .field label .unit{font-weight:400;color:var(--text3);font-size:10px}
+  .field label .coef{font-size:9px;padding:1px 5px;border-radius:4px;font-weight:700;margin-left:3px}
+  .coef-pos{background:#fef3c7;color:#92400e}
+  .coef-neg{background:#fce7f3;color:#9d174d}
+  .field input,.field select{height:36px;padding:0 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;color:var(--text);background:#fafbfd;transition:all 0.15s;width:100%;outline:none;-moz-appearance:textfield}
+  .field input::-webkit-outer-spin-button,.field input::-webkit-inner-spin-button{-webkit-appearance:none}
+  .field input:focus,.field select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(33,150,196,0.12);background:white}
+  .field input.filled{border-color:#c2d7f0;background:#f8fbff}
+  .field .hint{font-size:10px;color:var(--text3)}
+
+  /* ── TOGGLE ROW ── */
+  .toggle-row{display:flex;padding:12px 22px;gap:10px}
+  .seg-btn{flex:1;height:36px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;color:var(--text2);background:#fafbfd;cursor:pointer;transition:all 0.15s}
+  .seg-btn.active{background:var(--primary);border-color:var(--primary);color:white}
+  .seg-btn:hover:not(.active){border-color:var(--accent);color:var(--primary)}
+
+  /* ── FOOTER ── */
+  .form-foot{padding:16px 22px 20px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  .form-foot-note{font-size:11px;color:var(--text3);display:flex;align-items:flex-start;gap:6px;max-width:300px;line-height:1.5}
+  .btn-calc{display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--primary),var(--accent));color:white;border:none;border-radius:10px;padding:11px 30px;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:0.02em;transition:all 0.15s;box-shadow:0 4px 14px rgba(26,95,168,0.28)}
+  .btn-calc:hover{opacity:.92;transform:translateY(-1px);box-shadow:0 6px 18px rgba(26,95,168,0.34)}
+  .btn-calc:active{transform:translateY(0)}
+  .btn-calc svg{width:15px;height:15px;fill:white}
+  .btn-reset{background:none;border:1.5px solid var(--border);border-radius:10px;padding:11px 18px;font-size:12px;font-weight:600;color:var(--text3);cursor:pointer;transition:all 0.15s}
+  .btn-reset:hover{border-color:var(--accent);color:var(--primary)}
+
+  /* ── RIGHT PANEL ── */
+  .panel{display:flex;flex-direction:column;gap:20px;position:sticky;top:82px}
+
+  /* ── RESULT CARD ── */
+  .result-empty{padding:44px 20px;text-align:center}
+  .result-empty-icon{width:64px;height:64px;margin:0 auto 14px;background:var(--bg);border-radius:50%;display:flex;align-items:center;justify-content:center}
+  .result-empty-icon svg{width:28px;height:28px;stroke:var(--text3)}
+  .result-empty p{font-size:12px;color:var(--text3);line-height:1.6}
+
+  .result-body{display:none;padding:22px}
+
+  /* GAUGE */
+  .gauge-wrap{text-align:center;margin-bottom:20px}
+  .gauge-svg{width:210px;height:115px;overflow:visible}
+  .gauge-num{font-size:34px;font-weight:900;letter-spacing:-0.03em;margin-top:2px;transition:color 0.4s}
+  .gauge-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3);margin-top:2px}
+
+  /* RISK BADGE */
+  .risk-badge{display:flex;align-items:center;justify-content:center;gap:8px;padding:11px 16px;border-radius:10px;font-size:13px;font-weight:700;margin-bottom:16px}
+  .risk-badge .rb-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+  .r-low{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0}
+  .r-low .rb-dot{background:#22c55e}
+  .r-mod{background:#fffbeb;color:#92400e;border:1px solid #fde68a}
+  .r-mod .rb-dot{background:#f59e0b}
+  .r-high{background:#fef2f2;color:#991b1b;border:1px solid #fecaca}
+  .r-high .rb-dot{background:#ef4444}
+
+  /* METRICS */
+  .mlist{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+  .mrow{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px;padding:8px 11px;background:var(--bg);border:1px solid var(--border);border-radius:9px}
+  .mrow .ml{font-size:10px;font-weight:700;color:var(--text2);white-space:nowrap}
+  .mrow .mbar-bg{height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+  .mrow .mbar{height:100%;border-radius:3px;transition:width 0.6s cubic-bezier(.4,0,.2,1)}
+  .mrow .mv{font-size:12px;font-weight:800;color:var(--text);white-space:nowrap}
+
+  /* INTERP */
+  .interp{background:var(--primary-lt);border:1px solid #c2d7f0;border-radius:10px;padding:13px 15px}
+  .interp-title{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:var(--primary);margin-bottom:6px}
+  .interp p{font-size:11.5px;color:#1a4a72;line-height:1.65}
+
+  /* ── INFO CARD ── */
+  .info-body{padding:15px 22px;display:flex;flex-direction:column;gap:10px}
+  .info-item{display:flex;gap:9px;align-items:flex-start}
+  .info-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);margin-top:7px;flex-shrink:0}
+  .info-item p{font-size:11px;color:var(--text2);line-height:1.55}
+  .info-item strong{color:var(--text);font-weight:700}
+
+  /* ── DISCLAIMER ── */
+  .disc{display:flex;gap:10px;align-items:flex-start;background:#fffcf0;border:1px solid #fde68a;border-radius:10px;padding:13px 15px}
+  .disc svg{width:15px;height:15px;fill:#d97706;flex-shrink:0;margin-top:1px}
+  .disc p{font-size:11px;color:#78350f;line-height:1.55}
+
+  /* ── FOOTER ── */
+  footer{text-align:center;padding:28px;color:var(--text3);font-size:11px;border-top:1px solid var(--border);margin-top:8px}
+  footer a{color:var(--primary);text-decoration:none;font-weight:600}
+
+  /* ── ANIMATE ── */
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .result-body{animation:fadeUp 0.35s ease}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════ HEADER -->
+<header>
+  <div class="hdr">
+    <div class="logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+      </div>
+      <div>
+        <div class="logo-name">DR Risk Calculator</div>
+        <div class="logo-sub">Diabetic Retinopathy · Logistic Regression Model</div>
+      </div>
+    </div>
+    <div class="hdr-right">
+      <span class="badge badge-teal">NMR Lipidomics</span>
+      <span class="badge badge-blue">Research Use Only</span>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════ HERO -->
+<div class="hero">
+  <div class="hero-pill">Clinical Prediction Tool</div>
+  <h1>Diabetic <em>Retinopathy</em><br>Risk Assessment</h1>
+  <p class="hero-desc">Enter patient serum biomarker and clinical data to estimate the probability of developing diabetic retinopathy, powered by a validated logistic regression model trained on NMR lipidomics.</p>
+  <div class="hero-chips">
+    <span class="chip"><span class="chip-dot"></span>NMR Lipidomics Panel</span>
+    <span class="chip"><span class="chip-dot"></span>Clinical Biochemistry</span>
+    <span class="chip"><span class="chip-dot"></span>28 Biomarkers</span>
+    <span class="chip"><span class="chip-dot"></span>Logistic Regression · AUC-validated</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ MAIN -->
+<div class="wrap">
+
+  <!-- ═══ LEFT: FORM ═══ -->
+  <div>
+  <form id="riskForm" autocomplete="off">
+
+    <!-- ── BLOCK 1: 糖代谢 ── -->
+    <div class="card">
+      <div class="ch">
+        <div class="ch-icon ci-teal">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+          </svg>
+        </div>
+        <div class="ch-text">
+          <h3>Glycaemic Markers</h3>
+          <p>Primary drivers of diabetic retinopathy risk</p>
+        </div>
+      </div>
+      <div class="igrid igrid-2" style="padding-top:16px">
+        <div class="field">
+          <label>HbA1c <span class="unit">mmol/mol</span> <span class="coef coef-pos">+0.579</span></label>
+          <input type="number" id="HbA1c" step="0.1" placeholder="e.g. 52.0" min="20" max="150">
+          <div class="hint">IFCC units · Normal &lt; 42</div>
+        </div>
+        <div class="field">
+          <label>FPG <span class="unit">mmol/L</span> <span class="coef coef-pos">+0.121</span></label>
+          <input type="number" id="FPG" step="0.01" placeholder="e.g. 7.2" min="2" max="30">
+          <div class="hint">Fasting plasma glucose</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── BLOCK 2: 胆固醇 ── -->
+    <div class="card">
+      <div class="ch">
+        <div class="ch-icon ci-blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/>
+          </svg>
+        </div>
+        <div class="ch-text">
+          <h3>Cholesterol Fractions</h3>
+          <p>NMR-derived & clinical cholesterol measures</p>
+        </div>
+      </div>
+      <div class="igrid" style="padding-top:16px">
+        <div class="field">
+          <label>Total_C <span class="unit">mmol/L</span> <span class="coef coef-neg">−0.265</span></label>
+          <input type="number" id="Total_C" step="0.01" placeholder="e.g. 5.20">
+        </div>
+        <div class="field">
+          <label>VLDL_C <span class="unit">mmol/L</span> <span class="coef coef-neg">−0.307</span></label>
+          <input type="number" id="VLDL_C" step="0.01" placeholder="e.g. 0.55">
+        </div>
+        <div class="field">
+          <label>Clinical_LDL_C <span class="unit">mmol/L</span> <span class="coef coef-pos">+0.317</span></label>
+          <input type="number" id="Clinical_LDL_C" step="0.01" placeholder="e.g. 3.10">
+        </div>
+        <div class="field">
+          <label>HDL_C <span class="unit">mmol/L</span> <span class="coef coef-neg">−0.217</span></label>
+          <input type="number" id="HDL_C" step="0.01" placeholder="e.g. 1.20">
+        </div>
+        <div class="field">
+          <label>HDL <span class="unit">mmol/L</span> <span class="coef coef-pos">+0.190</span></label>
+          <input type="number" id="HDL" step="0.01" placeholder="e.g. 1.18">
+          <div class="hint">Clinical HDL</div>
+        </div>
+        <div class="field">
+          <label>LDL <span class="unit">mmol/L</span> <span class="coef coef-neg">−0.168</span></label>
+          <input type="number" id="LDL" step="0.01" placeholder="e.g. 3.17">
+          <div class="hint">Clinical LDL</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── BLOCK 3: 甘油三酯 ── -->
+    <div class="card">
+      <div class="ch">
+        <div class="ch-icon ci-orange">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+        </div>
+        <div class="ch-text">
+          <h3>Triglycerides</h3>
+          <p>Triglyceride fractions across lipoprotein classes</p>
+        </div>
+      </div>
+      <div class="igrid igrid-2" style="padding-top:16px">
+        <div class="field">
+          <label>Total_TG <span class="unit">mmol/L</span> <span class="coef coef-pos">+0.403</span></label>
+          <input type="number" id="Total_TG" step="0.01" placeholder="e.g. 1.80">
+        </div>
+        <div class="field">
+          <label>HDL_TG <span class="unit">mmol/L</span> <span class="coef coef-pos">+0.133</span></label>
+          <input type="number" id="HDL_TG" step="0.001" placeholder="e.g. 0.22">
+        </div>
+        <div class="field">
+          <label>VLDL_TG <span class="unit">mmol/L</span> <span class="coef coef-pos">+0.116</span></label>
+          <input type="number" id="VLDL_TG" step="0.01" placeholder="e.g. 0.90">
+        </div>
+        <div class="field">
+          <label>LDL_TG <span class="unit">mmol/L</span> <span class="coef coef-pos">+0.108</span></label>
+          <input type="number" id="LDL_TG" step="0.001" placeholder="e.g. 0.35">
+        </div>
+      </div>
+    </div>
+
+    <!-- ── BLOCK 4: 磷脂 ── -->
+    <div class="card">
+      <div class="ch">
+        <div class="ch-icon ci-purple">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/><path d="M12 8v4m0 4h.01"/>
+          </svg>
+        </div>
+        <div class="ch-text">
+          <h3>Phospholipids</h3>
+          <p>Phospholipid subclass concentrations</p>
+        </div>
+      </div>
+      <div class="igrid" style="padding-top:16px">
+        <div class="field">
+          <label>Total_PL <span class="unit">mmol/L</span> <span class="coef coef-neg">−0.200</span></label>
+          <input type="number" id="Total_PL" step="0.01" placeholder="e.g. 2.80">
+        </div>
+        <div class="field">
+          <label>HDL_PL <span class="unit">mmol/L</span> <span class="coef coef-neg">−0.207</span></label>
+          <input type="number" id="HDL_PL" step="0.01" placeholder="e.g. 1.10">
+        </div>
+        <div class="field">
+          <label>LDL_PL <span class="unit">mmol/L</span> <span class="coef coef-pos">+0.190</span></label>
+          <input type="number" id="LDL_PL" step="0.01" placeholder="e.g. 0.72">
+        </div>
+        <div class="field">
+          <label>Phosphoglyc <span class="unit">mmol/L</span> <span class="coef coef-neg">−0.210</span></label>
+          <input type="number" id="Phosphoglyc" step="0.001" placeholder="e.g. 0.05">
+        </div>
+      </div>
+    </div>
+
+    <!-- ── BLOCK 5: 胆固醇酯 ── -->
+    <div class="card">
+      <div class="ch">
+        <div class="ch-icon ci-blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="4"/><path d="M9 12h6M12 9v6"/>
+          </svg>
+        </div>
+        <div class="ch-text">
+          <h3>Cholesterol Esters</h3>
+          <p>Esterified cholesterol across lipoprotein subclasses</p>
+        </div>
+      </div>
+      <div class="igrid igrid-2" style="padding-top:16px">
+        <div class="field">
+          <label>Total_CE <span class="unit">mmol/L</span> <span class="coef coef-neg">−0.198</span></label>
+          <input type="number" id="Total_CE" step="0.01" placeholder="e.g. 3.40">
+        </div>
+        <div class="field">
+          <label>VLDL_CE <span class="unit">mmol/L</span> <span class="coef coef-neg">−0.237</span></label>
+          <input type="number" id="VLDL_CE" step="0.01" placeholder="e.g. 0.20">
+        </div>
+        <div class="field">
+          <label>HDL_CE <span class="unit">mmol/L</span> <span class="coef coef-neg">−0.133</span></label>
+          <input type="number" id="HDL_CE" step="0.01" placeholder="e.g. 0.80">
+        </div>
+        <div class="field">
+          <label>LDL_FC <span class="unit">mmol/L</span> <span class="coef coef-pos">+0.122</span></label>
+          <input type="number" id="LDL_FC" step="0.01" placeholder="e.g. 0.75">
+          <div class="hint">Free cholesterol in LDL</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── BLOCK 6: 脂蛋白 ── -->
+    <div class="card">
+      <div class="ch">
+        <div class="ch-icon ci-teal">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="8" cy="12" r="4"/><circle cx="16" cy="12" r="4"/>
+          </svg>
+        </div>
+        <div class="ch-text">
+          <h3>Lipoprotein & Apolipoprotein</h3>
+          <p>Total lipoprotein lipid content & structural proteins</p>
+        </div>
+      </div>
+      <div class="igrid" style="padding-top:16px">
+        <div class="field">
+          <label>LDL_L <span class="unit">mmol/L</span> <span class="coef coef-pos">+0.349</span></label>
+          <input type="number" id="LDL_L" step="0.01" placeholder="e.g. 3.20">
+          <div class="hint">Total lipids in LDL</div>
+        </div>
+        <div class="field">
+          <label>HDL_L <span class="unit">mmol/L</span> <span class="coef coef-neg">−0.291</span></label>
+          <input type="number" id="HDL_L" step="0.01" placeholder="e.g. 1.60">
+          <div class="hint">Total lipids in HDL</div>
+        </div>
+        <div class="field">
+          <label>VLDL_L <span class="unit">mmol/L</span> <span class="coef coef-neg">−0.219</span></label>
+          <input type="number" id="VLDL_L" step="0.01" placeholder="e.g. 0.80">
+          <div class="hint">Total lipids in VLDL</div>
+        </div>
+        <div class="field">
+          <label>ApoB <span class="unit">g/L</span> <span class="coef coef-neg">−0.137</span></label>
+          <input type="number" id="ApoB" step="0.001" placeholder="e.g. 0.90">
+        </div>
+        <div class="field">
+          <label>ApoA1 <span class="unit">g/L</span> <span class="coef coef-pos">+0.179</span></label>
+          <input type="number" id="ApoA1" step="0.001" placeholder="e.g. 1.45">
+        </div>
+        <div class="field">
+          <label>Omega_6 <span class="unit">mmol/L</span> <span class="coef coef-pos">+0.134</span></label>
+          <input type="number" id="Omega_6" step="0.01" placeholder="e.g. 3.80">
+        </div>
+        <div class="field">
+          <label>PUFA <span class="unit">mmol/L</span> <span class="coef coef-pos">+0.251</span></label>
+          <input type="number" id="PUFA" step="0.01" placeholder="e.g. 4.00">
+          <div class="hint">Polyunsaturated fatty acids</div>
+        </div>
+        <div class="field">
+          <label>Omega_3 <span class="unit">mmol/L</span> <span class="coef coef-pos">+0.117</span></label>
+          <input type="number" id="Omega_3" step="0.001" placeholder="e.g.0.65">
+        </div>
+      </div>
+    </div>
+
+    <!-- ── BLOCK 7: 肝酶 ── -->
+    <div class="card">
+      <div class="ch">
+        <div class="ch-icon ci-orange">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+        </div>
+        <div class="ch-text">
+          <h3>Liver & Inflammatory Markers</h3>
+          <p>Hepatic enzyme activity and systemic inflammation</p>
+        </div>
+      </div>
+      <div class="igrid" style="padding-top:16px">
+        <div class="field">
+          <label>ALT <span class="unit">U/L</span> <span class="coef coef-pos">+0.075</span></label>
+          <input type="number" id="ALT" step="0.1" placeholder="e.g. 35.0">
+          <div class="hint">Alanine aminotransferase</div>
+        </div>
+        <div class="field">
+          <label>AST <span class="unit">U/L</span> <span class="coef coef-neg">−0.240</span></label>
+          <input type="number" id="AST" step="0.1" placeholder="e.g. 30.0">
+          <div class="hint">Aspartate aminotransferase</div>
+        </div>
+        <div class="field">
+          <label>CRP <span class="unit">mg/L</span> <span class="coef coef-neg">−0.045</span></label>
+          <input type="number" id="CRP" step="0.01" placeholder="e.g. 3.0">
+          <div class="hint">C-reactive protein</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── BLOCK 8: 人口学 ── -->
+    <div class="card">
+      <div class="ch">
+        <div class="ch-icon ci-purple">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <div class="ch-text">
+          <h3>Anthropometric & Demographics</h3>
+          <p>Body composition and patient characteristics</p>
+        </div>
+      </div>
+      <div class="igrid" style="padding-top:16px">
+        <div class="field">
+          <label>Age <span class="unit">years</span> <span class="coef coef-pos">+0.143</span></label>
+          <input type="number" id="age" step="1" placeholder="e.g. 58" min="18" max="100">
+        </div>
+        <div class="field">
+          <label>Height <span class="unit">cm</span> <span class="coef coef-pos">+0.188</span></label>
+          <input type="number" id="height" step="0.1" placeholder="e.g. 168" min="100" max="220">
+        </div>
+        <div class="field">
+          <label>BMI <span class="unit">kg/m²</span> <span class="coef coef-pos">+0.142</span></label>
+          <input type="number" id="BMI" step="0.01" placeholder="e.g. 32.7" min="10" max="70">
+        </div>
+      </div>
+
+      <!-- Sex Toggle -->
+      <div class="slabel">Sex</div>
+      <div class="toggle-row">
+        <button type="button" class="seg-btn" id="btn_female" onclick="setSex('Female')">♀ Female</button>
+        <button type="button" class="seg-btn" id="btn_male"   onclick="setSex('Male')">♂ Male</button>
+      </div>
+      <input type="hidden" id="sex_Male" value="">
+      <div style="padding:0 22px 16px">
+        <div class="hint" id="sex_hint" style="color:#e05252;font-size:11px;display:none">⚠ Please select sex</div>
+      </div>
+    </div>
+
+    <!-- ── FORM FOOTER ── -->
+    <div class="card" style="margin-bottom:0">
+      <div class="form-foot">
+        <div class="form-foot-note">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#8a9ab0" stroke-width="2" width="14" height="14">
+            <circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/>
+          </svg>
+          All NMR variables use raw (unscaled) values. Clinical variables are auto-standardised before calculation.
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <button type="button" class="btn-reset" onclick="resetForm()">↺ Reset</button>
+          <button type="button" class="btn-calc" onclick="calculate()">
+            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            Calculate Risk
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </form>
+  </div><!-- end left -->
+
+  <!-- ═══ RIGHT PANEL ═══ -->
+  <div class="panel">
+
+    <!-- Result Card -->
+    <div class="card" id="resultCard">
+      <div class="ch">
+        <div class="ch-icon ci-teal">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#0d9488">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+        </div>
+        <div class="ch-text">
+          <h3>Risk Prediction Result</h3>
+          <p>Logistic regression output</p>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div class="result-empty" id="resultEmpty">
+        <div class="result-empty-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 8v4m0 4h.01"/>
+          </svg>
+        </div>
+        <p>Fill in the biomarker values<br>and click <strong>Calculate Risk</strong><br>to see the prediction.</p>
+      </div>
+
+      <!-- Result Body -->
+      <div class="result-body" id="resultBody">
+
+        <!-- Gauge -->
+        <div class="gauge-wrap">
+          <svg class="gauge-svg" viewBox="0 0 210 115" id="gaugeSvg">
+            <!-- track -->
+            <path id="gaugeTrack" d="M 25 105 A 80 80 0 0 1 185 105"
+              fill="none" stroke="#e8edf5" stroke-width="14" stroke-linecap="round"/>
+            <!-- fill -->
+            <path id="gaugeFill" d="M 25 105 A 80 80 0 0 1 185 105"
+              fill="none" stroke="#1a5fa8" stroke-width="14" stroke-linecap="round"
+              stroke-dasharray="0 251.2"/>
+            <!-- needle dot -->
+            <circle id="gaugeNeedle" cx="25" cy="105" r="6" fill="#1a5fa8"/>
+            <!-- zone labels -->
+            <text x="22"  y="114" font-size="8" fill="#27ae60" font-weight="700">LOW</text>
+            <text x="88"  y="30"  font-size="8" fill="#f59e0b" font-weight="700" text-anchor="middle">MOD</text>
+            <text x="183" y="114" font-size="8" fill="#e05252" font-weight="700" text-anchor="end">HIGH</text>
+          </svg>
+          <div class="gauge-num" id="gaugeNum">—</div>
+          <div class="gauge-lbl">Predicted DR Probability</div>
+        </div>
+
+        <!-- Risk Badge -->
+        <div class="risk-badge" id="riskBadge">
+          <div class="rb-dot"></div>
+          <span id="riskLabel">—</span>
+        </div>
+
+        <!-- Key Metrics -->
+        <div class="mlist">
+          <div class="mrow">
+            <span class="ml">Probability</span>
+            <div class="mbar-bg"><div class="mbar" id="mbarProb" style="width:0%;background:#1a5fa8"></div></div>
+            <span class="mv" id="mvalProb">—</span>
+          </div>
+          <div class="mrow">
+            <span class="ml">Log-odds</span>
+            <div class="mbar-bg"><div class="mbar" id="mbarLogit" style="width:0%;background:#6c5ce7"></div></div>
+            <span class="mv" id="mvalLogit">—</span>
+          </div>
+          <div class="mrow">
+            <span class="ml">Odds Ratio</span>
+            <div class="mbar-bg"><div class="mbar" id="mbarOR" style="width:0%;background:#0e9988"></div></div>
+            <span class="mv" id="mvalOR">—</span>
+          </div>
+        </div>
+
+        <!-- Interpretation -->
+        <div class="interp" id="interpBox">
+          <div class="interp-title">Clinical Interpretation</div>
+          <p id="interpText">—</p>
+        </div>
+
+      </div><!-- end result-body -->
+    </div><!-- end result card -->
+
+    <!-- Info Card -->
+    <div class="card">
+      <div class="ch">
+        <div class="ch-icon ci-blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#1d4ed8">
+            <circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/>
+          </svg>
+        </div>
+        <div class="ch-text">
+          <h3>How to Use</h3>
+          <p>Input guide & variable glossary</p>
+        </div>
+      </div>
+      <div class="info-body">
+        <div class="info-item">
+          <div class="info-dot"></div>
+          <p><strong>NMR variables</strong> (lipidomics panel): enter raw values in mmol/L as reported by your NMR platform. <em>No manual scaling needed.</em></p>
+        </div>
+        <div class="info-item">
+          <div class="info-dot"></div>
+          <p><strong>Clinical variables</strong> (FPG, HbA1c, ALT, AST, CRP, HDL, LDL, height, BMI, age, sex): auto-standardised internally using training cohort parameters.</p>
+        </div>
+        <div class="info-item">
+          <div class="info-dot"></div>
+          <p><strong>HbA1c</strong> must be entered in <strong>IFCC units (mmol/mol)</strong>, not NGSP (%). To convert: mmol/mol = (% − 2.15) × 10.929</p>
+        </div>
+        <div class="info-item">
+          <div class="info-dot"></div>
+          <p>The <strong>coefficient tags</strong> (e.g. <span class="coef coef-pos" style="font-size:10px;padding:1px 5px;border-radius:4px">+0.58</span>) indicate direction & strength of each variable's contribution to risk.</p>
+        </div>
+        <div class="info-item">
+          <div class="info-dot"></div>
+          <p>Missing fields default to <strong>cohort mean</strong> (equivalent to a z-score of 0 for scaled variables, 0 contribution for NMR variables with a coefficient applied to the actual value).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Disclaimer -->
+    <div class="disc">
+      <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+      <p>This tool is intended for <strong>research purposes only</strong> and does not constitute clinical advice. All predictions should be interpreted by a qualified clinician in the context of the full patient presentation.</p>
+    </div>
+
+  </div><!-- end panel -->
+</div><!-- end wrap -->
+
+<footer>
+  Powered by <a href="#">Logistic Regression · NMR Lipidomics</a> &nbsp;·&nbsp; Research Use Only &nbsp;·&nbsp; 2026
+</footer>
+
+<!-- ═══════════════════════════════════════════════ SCRIPT -->
+<script>
+// ─────────────────────────────────────────────────────────────
+//  MODEL PARAMETERS
+// ─────────────────────────────────────────────────────────────
+const INTERCEPT = -0.7428727190639921;
+
+// Coefficients for ALL features (full model order)
+const COEFS = {
+  visit_index:    0.0,
+  Total_C:       -0.2649364495957765,
+  non_HDL_C:     -0.048090542068655054,
+  Remnant_C:     -0.09875488733174281,
+  VLDL_C:        -0.30707486289448105,
+  Clinical_LDL_C: 0.317462923717528,
+  LDL_C:          0.050664333781916406,
+  HDL_C:         -0.21684589832093912,
+  Total_TG:       0.40269461958534886,
+  VLDL_TG:        0.11619471194241938,
+  LDL_TG:         0.10806979569469079,
+  HDL_TG:         0.1331222779020505,
+  Total_PL:      -0.1998803941102911,
+  VLDL_PL:       -0.028016204673606448,
+  LDL_PL:         0.19013272683630442,
+  HDL_PL:        -0.20733333780926014,
+  Total_CE:      -0.19816575616491525,
+  VLDL_CE:       -0.23673632244431758,
+  LDL_CE:        -0.07100672499733365,
+  HDL_CE:        -0.13267305091013779,
+  Total_FC:      -0.06677069871615876,
+  VLDL_FC:       -0.07033852792494086,
+  LDL_FC:         0.12167107306355356,
+  HDL_FC:        -0.08417284427829656,
+  Total_L:       -0.06212223334586165,
+  VLDL_L:        -0.21889634860548393,
+  LDL_L:          0.3488668645152536,
+  HDL_L:         -0.2910569574176407,
+  Phosphoglyc:   -0.20956785328657093,
+  ApoB:          -0.13702721159029388,
+  ApoA1:          0.17937035733102383,
+  Total_FA:      -0.01139850247456371,
+  Omega_3:        0.11714888741754158,
+  Omega_6:        0.1336968143551649,
+  PUFA:           0.25084569588120886,
+  TG:            -0.02212251971612501,
+  FPG:            0.12083042439618455,
+  HbA1c:          0.5787438878450473,
+  ALT:            0.0750779143365853,
+  AST:           -0.24044352361681456,
+  CRP:           -0.04523945842080222,
+  HDL:            0.1895281575542016,
+  LDL:           -0.16775613411032086,
+  height:         0.18827993284692746,
+  BMI:            0.14159911632726116,
+  weight:        -0.08951357117276226,
+  age:            0.14297164009254243,
+  sex_Male:      -0.2718561149266465
+};
+
+// Scaler parameters — ONLY for clinical variables
+const SCALER_MEAN = {
+  FPG:      6.627874663797741,
+  HbA1c:   46.839860139860136,
+  ALT:     38.06615384615385,
+  AST:     35.78429263044648,
+  CRP:      4.995745024206562,
+  HDL:      1.1822899408284024,
+  LDL:      3.1665648197955893,
+  height: 168.48407746100054,
+  BMI:     32.73984353847768,
+  weight:  93.04653039268423,
+  age:     58.535771920387305,
+  sex_Male: 0.5556750941366326
+};
+const SCALER_SCALE = {
+  FPG:      2.920215983615097,
+  HbA1c:   13.553454356505844,
+  ALT:     25.752456874492957,
+  AST:     21.716216073012166,
+  CRP:      6.328542745185869,
+  HDL:      0.324317518794858,
+  LDL:      0.9659330264497907,
+  height:   9.304237025321875,
+  BMI:      5.768115355000953,
+  weight:  18.325670568534782,
+  age:      7.405360254492247,
+  sex_Male: 0.49689061562166476
+};
+
+// Features that need StandardScaler
+const SCALED_FEATURES = new Set(Object.keys(SCALER_MEAN));
+
+// All features in order (must match training)
+const FEATURE_ORDER = [
+  'visit_index','Total_C','non_HDL_C','Remnant_C','VLDL_C','Clinical_LDL_C',
+  'LDL_C','HDL_C','Total_TG','VLDL_TG','LDL_TG','HDL_TG','Total_PL',
+  'VLDL_PL','LDL_PL','HDL_PL','Total_CE','VLDL_CE','LDL_CE','HDL_CE',
+  'Total_FC','VLDL_FC','LDL_FC','HDL_FC','Total_L','VLDL_L','LDL_L',
+  'HDL_L','Phosphoglyc','ApoB','ApoA1','Total_FA','Omega_3','Omega_6',
+  'PUFA','TG','FPG','HbA1c','ALT','AST','CRP','HDL','LDL',
+  'height','BMI','weight','age','sex_Male'
+];
+
+// ─────────────────────────────────────────────────────────────
+//  SEX TOGGLE
+// ─────────────────────────────────────────────────────────────
+function setSex(val) {
+  document.getElementById('sex_Male').value = val === 'Male' ? '1' : '0';
+  document.getElementById('btn_male').classList.toggle('active', val === 'Male');
+  document.getElementById('btn_female').classList.toggle('active', val === 'Female');
+  document.getElementById('sex_hint').style.display = 'none';
+}
+
+// ─────────────────────────────────────────────────────────────
+//  RESET
+// ─────────────────────────────────────────────────────────────
+function resetForm() {
+  document.getElementById('riskForm').reset();
+  document.getElementById('sex_Male').value = '';
+  document.getElementById('btn_male').classList.remove('active');
+  document.getElementById('btn_female').classList.remove('active');
+  document.getElementById('sex_hint').style.display = 'none';
+  document.getElementById('resultEmpty').style.display = 'block';
+  document.getElementById('resultBody').style.display  = 'none';
+  // reset input styling
+  document.querySelectorAll('.field input').forEach(el => el.classList.remove('filled'));
+}
+
+// ─────────────────────────────────────────────────────────────
+//  CALCULATE
+// ─────────────────────────────────────────────────────────────
+function calculate() {
+  // Check sex
+  const sexVal = document.getElementById('sex_Male').value;
+  if (sexVal === '') {
+    document.getElementById('sex_hint').style.display = 'block';
+    document.getElementById('btn_male').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  // Collect raw input values
+  // For NMR features not in the form → use 0 (contributes 0 to log-odds since raw × coef)
+  // For clinical features not filled → use cohort mean (z-score = 0)
+  const rawValues = {};
+
+  // Fixed
+  rawValues['visit_index'] = 0;
+  rawValues['sex_Male']    = parseFloat(sexVal);
+
+  // NMR features with inputs
+  const nmrIds = [
+    'Total_C','VLDL_C','Clinical_LDL_C','HDL_C',
+    'Total_TG','VLDL_TG','LDL_TG','HDL_TG',
+    'Total_PL','HDL_PL','LDL_PL','Phosphoglyc',
+    'Total_CE','VLDL_CE','HDL_CE','LDL_FC',
+    'LDL_L','HDL_L','VLDL_L',
+    'ApoB','ApoA1','Omega_6','PUFA','Omega_3'
+  ];
+  nmrIds.forEach(id => {
+    const el = document.getElementById(id);
+    rawValues[id] = (el && el.value !== '') ? parseFloat(el.value) : 0;
+    if (el && el.value !== '') el.classList.add('filled');
+  });
+
+  // NMR features NOT in form (set to 0 raw → contribution = 0)
+  const missingNMR = [
+    'non_HDL_C','Remnant_C','LDL_C',
+    'VLDL_PL',
+    'LDL_CE',
+    'Total_FC','VLDL_FC','HDL_FC',
+    'Total_L',
+    'Total_FA','TG',
+    'HDL_L' // already above, skip
+  ];
+  missingNMR.forEach(id => {
+    if (!(id in rawValues)) rawValues[id] = 0;
+  });
+
+  // Clinical features with inputs
+  const clinIds = ['FPG','HbA1c','ALT','AST','CRP','HDL','LDL','height','BMI','age'];
+  clinIds.forEach(id => {
+    const el = document.getElementById(id);
+    rawValues[id] = (el && el.value !== '') ? parseFloat(el.value) : null;
+    if (el && el.value !== '') el.classList.add('filled');
+  });
+
+  // weight not in form → mean → z=0
+  rawValues['weight'] = null;
+
+  // ── Compute log-odds ──
+  let logit = INTERCEPT;
+
+  FEATURE_ORDER.forEach(feat => {
+    const coef = COEFS[feat];
+    if (coef === 0) return;
+
+    let val;
+    if (SCALED_FEATURES.has(feat)) {
+      // Clinical: standardise
+      const raw = rawValues[feat];
+      if (raw === null || raw === undefined || isNaN(raw)) {
+        val = 0; // mean → z=0
+      } else {
+        val = (raw - SCALER_MEAN[feat]) / SCALER_SCALE[feat];
+      }
+    } else {
+      // NMR: raw value
+      const raw = rawValues[feat];
+      val = (raw === null || raw === undefined || isNaN(raw)) ? 0 : raw;
+    }
+
+    logit += coef * val;
+  });
+
+  // ── Sigmoid ──
+  const prob = 1 / (1 + Math.exp(-logit));
+
+  // ── Show results ──
+  showResult(prob, logit);
+}
+
+// ─────────────────────────────────────────────────────────────
+//  SHOW RESULT
+// ─────────────────────────────────────────────────────────────
+function showResult(prob, logit) {
+  document.getElementById('resultEmpty').style.display = 'none';
+  const body = document.getElementById('resultBody');
+  body.style.display = 'block';
+
+  const pct = (prob * 100).toFixed(1);
+  const or  = Math.exp(logit).toFixed(3);
+
+  // ── Gauge ──
+  updateGauge(prob);
+
+  // ── Gauge number ──
+  const numEl = document.getElementById('gaugeNum');
+  numEl.textContent = pct + '%';
+
+  // ── Risk category ──
+  const badge = document.getElementById('riskBadge');
+  const label = document.getElementById('riskLabel');
+  badge.className = 'risk-badge';
+
+  let category, interp;
+  if (prob < 0.25) {
+    badge.classList.add('r-low');
+    label.textContent = '🟢 Low Risk  (< 25%)';
+    numEl.style.color = '#166534';
+    category = 'Low';
+    interp = `The predicted probability of DR is <strong>${pct}%</strong>, which falls in the <strong>low-risk</strong> range. Continued monitoring of glycaemic control and lipid profiles is recommended. Routine ophthalmological screening per clinical guidelines is advised.`;
+  } else if (prob < 0.55) {
+    badge.classList.add('r-mod');
+    label.textContent = '🟡 Moderate Risk  (25–55%)';
+    numEl.style.color = '#92400e';
+    category = 'Moderate';
+    interp = `The predicted probability of DR is <strong>${pct}%</strong>, indicating <strong>moderate risk</strong>. Consider intensified management of HbA1c, triglycerides, and blood pressure. Enhanced ophthalmological surveillance (e.g. annual dilated fundus exam) is strongly recommended.`;
+  } else {
+    badge.classList.add('r-high');
+    label.textContent = '🔴 High Risk  (≥ 55%)';
+    numEl.style.color = '#991b1b';
+    category = 'High';
+    interp = `The predicted probability of DR is <strong>${pct}%</strong>, indicating <strong>high risk</strong>. Prompt ophthalmological referral is warranted. Aggressive optimisation of glycaemic control (HbA1c target), lipid-lowering therapy, and blood pressure management should be prioritised.`;
+  }
+
+  // ── Metrics ──
+  document.getElementById('mvalProb').textContent  = pct + '%';
+  document.getElementById('mvalLogit').textContent = logit.toFixed(4);
+  document.getElementById('mvalOR').textContent    = or;
+
+  // bar widths
+  setTimeout(() => {
+    document.getElementById('mbarProb').style.width  = Math.min(prob * 100, 100) + '%';
+    // logit bar: clamp to -4..+4 range → 0..100%
+    const logitPct = Math.min(Math.max((logit + 4) / 8 * 100, 0), 100);
+    document.getElementById('mbarLogit').style.width  = logitPct + '%';
+    // OR bar: clamp 0..5 → 0..100%
+    const orPct = Math.min(Math.exp(logit) / 5 * 100, 100);
+    document.getElementById('mbarOR').style.width = orPct + '%';
+  }, 50);
+
+  // ── Interpretation ──
+  document.getElementById('interpText').innerHTML = interp;
+}
+
+// ─────────────────────────────────────────────────────────────
+//  GAUGE ANIMATION
+// ─────────────────────────────────────────────────────────────
+function updateGauge(prob) {
+  const totalLen = 251.2; // π × r = π × 80 ≈ 251.2
+  const fill = Math.min(prob, 1) * totalLen;
+
+  const fillEl   = document.getElementById('gaugeFill');
+  const needleEl = document.getElementById('gaugeNeedle');
+
+  // Color gradient: green → amber → red
+  let color;
+  if (prob < 0.25)      color = '#27ae60';
+  else if (prob < 0.55) color = '#f59e0b';
+  else                  color = '#e05252';
+
+  fillEl.setAttribute('stroke-dasharray', `${fill} ${totalLen}`);
+  fillEl.setAttribute('stroke', color);
+
+  // Needle position along arc
+  // Arc: center (105,105), r=80, from 180° to 0° (left to right)
+  const angle = Math.PI - Math.min(prob, 1) * Math.PI; // 180° → 0°
+  const nx = 105 + 80 * Math.cos(angle);
+  const ny = 105 - 80 * Math.sin(angle);
+  needleEl.setAttribute('cx', nx.toFixed(2));
+  needleEl.setAttribute('cy', ny.toFixed(2));
+  needleEl.setAttribute('fill', color);
+}
+
+// ─────────────────────────────────────────────────────────────
+//  Live "filled" class on inputs
+// ─────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.field input[type="number"]').forEach(el => {
+    el.addEventListener('input', () => {
+      el.classList.toggle('filled', el.value !== '');
+    });
+  });
+});
+</script>
+
+</body>
+</html>

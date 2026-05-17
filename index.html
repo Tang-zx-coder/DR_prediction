@@ -6,7 +6,116 @@
     <title>Document</title>
 </head>
 <body>
-    
+    <!-- ════════════════════════════════════════════
+     欢迎页面
+════════════════════════════════════════════ -->
+<div id="welcomePage">
+  <div class="welcome-wrap">
+
+    <!-- 顶部标题区 -->
+    <div class="welcome-header">
+      <div class="welcome-icon">👁</div>
+      <h1 class="welcome-title">Diabetic Retinopathy<br>Risk Prediction System</h1>
+      <p class="welcome-subtitle">For Patients with Comorbid MASLD & Type 2 Diabetes</p>
+      <div class="welcome-divider"></div>
+    </div>
+
+    <!-- 背景介绍 -->
+    <div class="welcome-section">
+      <div class="welcome-section-title">
+        <span class="section-dot"></span>Background
+      </div>
+      <p class="welcome-text">
+        Metabolic dysfunction-associated steatotic liver disease (MASLD) and type 2 diabetes
+        exhibit a comorbidity rate of up to <strong>70%</strong>. The consequent diabetic
+        retinopathy (DR) is a leading cause of blindness in working-age adults, with a
+        severely underestimated disease burden.
+      </p>
+    </div>
+
+    <!-- 现有局限性 -->
+    <div class="welcome-section">
+      <div class="welcome-section-title">
+        <span class="section-dot"></span>Limitations of Existing Methods
+      </div>
+      <p class="welcome-text">
+        Existing clinical screening methods mainly rely on fundus photography and specialist
+        examinations by ophthalmologists, which have the following limitations:
+      </p>
+      <div class="welcome-limits">
+        <div class="limit-item">
+          <span class="limit-num">01</span>
+          <span class="limit-text">
+            <strong>Imbalance in screening resources:</strong> primary healthcare institutions
+            lack ophthalmic equipment and specialist ophthalmologists, making large-scale
+            early screening difficult to achieve.
+          </span>
+        </div>
+        <div class="limit-item">
+          <span class="limit-num">02</span>
+          <span class="limit-text">
+            <strong>Inadequate risk stratification:</strong> there is a lack of simple and
+            easy-to-use quantitative risk assessment tools, making it difficult to prioritize
+            the identification of high-risk patients with comorbidities.
+          </span>
+        </div>
+        <div class="limit-item">
+          <span class="limit-num">03</span>
+          <span class="limit-text">
+            <strong>Absence of multi-dimensional information integration:</strong> traditional
+            assessment methods often rely on a single indicator (e.g., HbA1c) and fail to
+            fully integrate multi-dimensional biomarker information such as lipidomics.
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 关于本工具 -->
+    <div class="welcome-section">
+      <div class="welcome-section-title">
+        <span class="section-dot"></span>About This Tool
+      </div>
+      <p class="welcome-text">
+        Nuclear magnetic resonance (NMR) lipidomics technology can simultaneously detect
+        dozens of lipoprotein subfractions and fatty acid-related indicators in plasma,
+        providing rich metabolic phenotypic information for DR risk prediction. This software
+        is based on data from patients with comorbid MASLD and type 2 diabetes in the
+        <strong>UK Biobank</strong>, integrates NMR lipidomic features with routine clinical
+        indicators to construct a logistic regression risk prediction model, and has been
+        developed into a risk prediction tool that can be run directly in a web browser.
+      </p>
+    </div>
+
+    <!-- 特性标签 -->
+    <div class="welcome-tags">
+      <span class="wtag">🧪 NMR Lipidomics</span>
+      <span class="wtag">📊 33 Biomarkers</span>
+      <span class="wtag">🏥 UK Biobank</span>
+      <span class="wtag">⚡ Instant Result</span>
+      <span class="wtag">📱 Mobile Friendly</span>
+    </div>
+
+    <!-- 重要提示 -->
+    <div class="welcome-note">
+      <div class="welcome-note-title">📌 Important Note</div>
+      <div class="welcome-note-text">
+        This model is trained to be more suitable for DR risk prediction in patients with
+        comorbid MASLD and T2D. For research and clinical reference only — not a substitute
+        for professional medical diagnosis.
+      </div>
+    </div>
+
+    <!-- 进入按钮 -->
+    <button class="welcome-btn" onclick="enterSystem()">
+      Enter System &nbsp;→
+    </button>
+
+    <!-- 版本号 -->
+    <p class="welcome-version">V1.0 &nbsp;|&nbsp; Diabetic Retinopathy Risk Prediction System</p>
+
+  </div>
+</div>
+
 </body>
 </html>
 
@@ -108,15 +217,16 @@
   .field input:focus,.field select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(33,150,196,0.12);background:white}
   .field input.filled{border-color:#c2d7f0;background:#f8fbff}
   .field .hint{font-size:10px;color:var(--text3)}
-  .err-msg {
-    font-size: 10px;
-    color: #e05252;
-    margin-top: 3px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 3px;
-  }
+.err-msg {
+  font-size: 10px;
+  color: #e05252;
+  margin-top: 3px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
 
   /* ── TOGGLE ROW ── */
   .toggle-row{display:flex;padding:12px 22px;gap:10px}
@@ -193,6 +303,264 @@
   /* ── ANIMATE ── */
   @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
   .result-body{animation:fadeUp 0.35s ease}
+  /* ══════════════════════════════════════════
+   欢迎页面样式
+══════════════════════════════════════════ */
+#welcomePage {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(145deg, #e8f4fd 0%, #dbeafe 40%, #eff6ff 70%, #e0f2fe 100%);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 99999;
+  padding: 32px 20px;
+  overflow-y: auto;
+}
+
+.welcome-wrap {
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(147,197,253,0.45);
+  border-radius: 24px;
+  padding: 44px 48px;
+  max-width: 680px;
+  width: 100%;
+  text-align: left;
+  box-shadow:
+    0 8px 32px rgba(59,130,246,0.10),
+    0 2px 8px rgba(59,130,246,0.06);
+  animation: welcomeFadeIn 0.8s ease;
+  margin: auto;
+}
+
+@keyframes welcomeFadeIn {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* 顶部标题区 */
+.welcome-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.welcome-icon {
+  font-size: 48px;
+  margin-bottom: 14px;
+  filter: drop-shadow(0 0 12px rgba(59,130,246,0.30));
+}
+
+.welcome-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #1e40af;
+  line-height: 1.35;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.3px;
+}
+
+.welcome-subtitle {
+  font-size: 13px;
+  color: #3b82f6;
+  margin: 0 0 20px 0;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.welcome-divider {
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #60a5fa, #93c5fd);
+  border-radius: 2px;
+  margin: 0 auto;
+}
+
+/* 内容分区 */
+.welcome-section {
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(147,197,253,0.30);
+}
+
+.welcome-section:last-of-type {
+  border-bottom: none;
+}
+
+.welcome-section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #2563eb;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin-bottom: 10px;
+}
+
+.section-dot {
+  width: 6px;
+  height: 6px;
+  background: #60a5fa;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.welcome-text {
+  font-size: 13.5px;
+  color: #334155;
+  line-height: 1.8;
+  margin: 0;
+}
+
+.welcome-text strong {
+  color: #1d4ed8;
+  font-weight: 700;
+}
+
+/* 局限性列表 */
+.welcome-limits {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.limit-item {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  background: rgba(219,234,254,0.50);
+  border: 1px solid rgba(147,197,253,0.45);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.limit-num {
+  font-size: 11px;
+  font-weight: 800;
+  color: #2563eb;
+  background: rgba(219,234,254,0.80);
+  border-radius: 6px;
+  padding: 2px 7px;
+  flex-shrink: 0;
+  letter-spacing: 0.5px;
+  margin-top: 1px;
+}
+
+.limit-text {
+  font-size: 13px;
+  color: #334155;
+  line-height: 1.75;
+}
+
+.limit-text strong {
+  color: #1d4ed8;
+  font-weight: 700;
+}
+
+/* 特性标签 */
+.welcome-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.wtag {
+  background: rgba(219,234,254,0.70);
+  border: 1px solid rgba(147,197,253,0.60);
+  color: #1d4ed8;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 14px;
+  border-radius: 20px;
+  letter-spacing: 0.3px;
+}
+
+/* 重要提示框 */
+.welcome-note {
+  background: rgba(254,243,199,0.60);
+  border: 1px solid rgba(252,211,77,0.50);
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin-bottom: 28px;
+}
+
+.welcome-note-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #b45309;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.welcome-note-text {
+  font-size: 12.5px;
+  color: #92400e;
+  line-height: 1.75;
+}
+
+/* 进入按钮 */
+.welcome-btn {
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 14px 48px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  box-shadow:
+    0 6px 20px rgba(59,130,246,0.30),
+    0 2px 6px rgba(59,130,246,0.15);
+  transition: all 0.25s ease;
+  margin-bottom: 18px;
+  width: 100%;
+  display: block;
+}
+
+.welcome-btn:hover {
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  transform: translateY(-2px);
+  box-shadow:
+    0 10px 28px rgba(59,130,246,0.38),
+    0 3px 8px rgba(59,130,246,0.20);
+}
+
+.welcome-btn:active {
+  transform: translateY(0);
+}
+
+/* 版本信息 */
+.welcome-version {
+  font-size: 11px;
+  color: #94a3b8;
+  margin: 0;
+  text-align: center;
+}
+
+/* 手机端适配 */
+@media (max-width: 600px) {
+  .welcome-wrap {
+    padding: 32px 24px;
+  }
+  .welcome-title {
+    font-size: 21px;
+  }
+  .limit-item {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+
+
 </style>
 </head>
 <body>
@@ -692,6 +1060,19 @@
 
 <!-- ═══════════════════════════════════════════════ SCRIPT -->
 <script>
+// ── 欢迎页 → 主页面 ──
+function enterSystem() {
+  const page = document.getElementById('welcomePage');
+
+  // 淡出动画
+  page.style.transition = 'opacity 0.6s ease';
+  page.style.opacity    = '0';
+
+  setTimeout(() => {
+    page.style.display = 'none';
+  }, 600);
+}
+
 // ─────────────────────────────────────────────────────────────
 //  MODEL PARAMETERS
 // ─────────────────────────────────────────────────────────────
